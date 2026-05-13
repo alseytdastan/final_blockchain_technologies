@@ -1,34 +1,51 @@
-# Blockchain Technologies 2 — Final Project
+# DeFi Super-App — Full-Stack Decentralized Protocol
 
-Foundry-based starter for `Option A: DeFi Super-App`:
-- AMM
-- Lending protocol
-- ERC-4626 yield vault
-- Chainlink pricing
-- DAO governance
-- L2 deployment
+A production-grade DeFi protocol built for the Blockchain Technologies 2 Final Project.
+The platform combines a Constant Product AMM, ERC-4626 Yield Vault, DAO Governance, Chainlink Oracles, and Layer 2 deployment into a single decentralized ecosystem.
 
-## First Task Completed
+## Core Features
 
-This repository is initialized with Foundry and includes the first project artifact:
-- `ProtocolBootstrap` contract to register core module addresses
-- test suite for ownership and safety checks
-- clean base structure for incremental implementation
+* Constant Product AMM (x·y = k) with LP tokens and slippage protection
+* ERC-4626 tokenized yield vault
+* DAO governance using OpenZeppelin Governor + TimelockController
+* ERC20Votes governance token with ERC20Permit
+* Chainlink price feed integration with stale price protection
+* Upgradeable smart contracts using UUPS proxy pattern
+* Factory contracts using CREATE and CREATE2
+* The Graph subgraph indexing and GraphQL queries
+* Arbitrum / Base / Optimism Sepolia deployment
+* Full Foundry test suite:
 
-## Quick Start
+  * Unit tests
+  * Fuzz tests
+  * Invariant tests
+  * Fork tests
+* CI/CD with GitHub Actions, Slither, forge coverage, solhint, and Prettier
 
-```bash
-forge build
-forge test
-```
+## Tech Stack
 
-## Current Structure
+* Solidity
+* Foundry
+* OpenZeppelin
+* Chainlink
+* The Graph
+* React + Wagmi + Viem
+* TypeScript
+* GitHub Actions
 
-- `src/` smart contracts
-- `test/` Foundry tests
-- `script/` deployment and scripting files
-- `.github/workflows/` CI pipeline
+## Security
 
-## Next Step (Task 2)
+* Reentrancy protection
+* AccessControl role management
+* Timelock governance
+* Slither static analysis
+* Internal security audit report
+* Vulnerability reproduction and fixes
 
-Implement governance token stack (`ERC20Votes + ERC20Permit`) and initial DAO wiring.
+## Architecture
+
+The protocol follows modern DeFi engineering standards with modular contracts, upgradeable proxy architecture, DAO-controlled treasury, and Layer 2 optimized deployments.
+
+## Team Goal
+
+To design, implement, audit, and deploy a complete production-style decentralized finance protocol demonstrating advanced smart contract engineering and full-stack Web3 development.
