@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract Pool {
+contract AMMPool {
     address public immutable tokenA;
     address public immutable tokenB;
     address public immutable creator;

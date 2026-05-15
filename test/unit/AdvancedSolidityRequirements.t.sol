@@ -4,32 +4,32 @@ pragma solidity ^0.8.24;
 import {Test} from "forge-std/Test.sol";
 import {ERC1967Proxy} from "openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
-import {ProtocolConfigV1} from "../src/upgradeability/ProtocolConfigV1.sol";
-import {ProtocolConfigV2} from "../src/upgradeability/ProtocolConfigV2.sol";
-import {PoolFactory} from "../src/factory/PoolFactory.sol";
-import {Pool} from "../src/factory/Pool.sol";
-import {MathBench} from "../src/yul/MathBench.sol";
+import {UpgradeableProtocolConfig} from "../../contracts/upgradeable/UpgradeableProtocolConfig.sol";
+import {UpgradeableProtocolConfigV2} from "../../contracts/upgradeable/UpgradeableProtocolConfigV2.sol";
+import {PoolFactory} from "../../contracts/amm/PoolFactory.sol";
+import {AMMPool} from "../../contracts/amm/AMMPool.sol";
+import {MathUtils} from "../../contracts/utils/MathUtils.sol";
 
 contract AdvancedSolidityRequirementsTest is Test {
     address internal owner = address(0xA11CE);
 
     function testUUPSUpgradePathV1ToV2() external {
-        ProtocolConfigV1 v1Implementation = new ProtocolConfigV1();
+        UpgradeableProtocolConfig v1Implementation = new UpgradeableProtocolConfig();
         bytes memory initData = abi.encodeCall(
-            ProtocolConfigV1.initialize,
+            UpgradeableProtocolConfig.initialize,
             (owner, 30, "Option A Config")
         );
         ERC1967Proxy proxy = new ERC1967Proxy(address(v1Implementation), initData);
 
-        ProtocolConfigV1 proxiedV1 = ProtocolConfigV1(address(proxy));
+        UpgradeableProtocolConfig proxiedV1 = UpgradeableProtocolConfig(address(proxy));
         assertEq(proxiedV1.feeBps(), 30);
         assertEq(proxiedV1.protocolName(), "Option A Config");
 
-        ProtocolConfigV2 v2Implementation = new ProtocolConfigV2();
+        UpgradeableProtocolConfigV2 v2Implementation = new UpgradeableProtocolConfigV2();
         vm.prank(owner);
         proxiedV1.upgradeToAndCall(address(v2Implementation), "");
 
-        ProtocolConfigV2 proxiedV2 = ProtocolConfigV2(address(proxy));
+        UpgradeableProtocolConfigV2 proxiedV2 = UpgradeableProtocolConfigV2(address(proxy));
         assertEq(proxiedV2.feeBps(), 30);
         assertEq(proxiedV2.protocolName(), "Option A Config");
         assertEq(proxiedV2.version(), "V2");
@@ -45,9 +45,9 @@ contract AdvancedSolidityRequirementsTest is Test {
         address tokenB = address(0x2222);
 
         address poolCreate = factory.createPool(tokenA, tokenB);
-        assertEq(Pool(poolCreate).tokenA(), tokenA);
-        assertEq(Pool(poolCreate).tokenB(), tokenB);
-        assertEq(Pool(poolCreate).creator(), address(this));
+        assertEq(AMMPool(poolCreate).tokenA(), tokenA);
+        assertEq(AMMPool(poolCreate).tokenB(), tokenB);
+        assertEq(AMMPool(poolCreate).creator(), address(this));
 
         bytes32 salt = keccak256("OPTION_A_POOL_SALT");
         address predicted = factory.predictDeterministicAddress(
@@ -59,11 +59,11 @@ contract AdvancedSolidityRequirementsTest is Test {
         address poolCreate2 = factory.createPoolDeterministic(tokenA, tokenB, salt);
 
         assertEq(poolCreate2, predicted);
-        assertEq(Pool(poolCreate2).creator(), address(this));
+        assertEq(AMMPool(poolCreate2).creator(), address(this));
     }
 
     function testYulMatchesSolidityAndBenchmarkedGas() external {
-        MathBench bench = new MathBench();
+        MathUtils bench = new MathUtils();
         uint256 a = 123_456;
         uint256 b = 654_321;
 

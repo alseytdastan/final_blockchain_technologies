@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {ProtocolConfigV1} from "./ProtocolConfigV1.sol";
+import {UpgradeableProtocolConfig} from "./UpgradeableProtocolConfig.sol";
 
-contract ProtocolConfigV2 is ProtocolConfigV1 {
+contract UpgradeableProtocolConfigV2 is UpgradeableProtocolConfig {
     uint256 public maxLtvBps;
 
     function setMaxLtvBps(uint256 newMaxLtvBps) external onlyOwner {

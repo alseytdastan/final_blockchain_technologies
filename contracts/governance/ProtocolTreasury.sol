@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-/// @title ProtocolBootstrap
+/// @title ProtocolTreasury
 /// @notice First-step registry for Option A module addresses.
-contract ProtocolBootstrap {
+contract ProtocolTreasury {
     error NotOwner();
     error ZeroAddress();
     error ModuleAlreadySet(Module module);

@@ -5,7 +5,7 @@ import {Initializable} from "openzeppelin-contracts-upgradeable/contracts/proxy/
 import {UUPSUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 
-contract ProtocolConfigV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract UpgradeableProtocolConfig is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     uint256 public feeBps;
     string public protocolName;
 
