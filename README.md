@@ -22,6 +22,13 @@ The platform combines a Constant Product AMM, ERC-4626 Yield Vault, DAO Governan
   * Fork tests
 * CI/CD with GitHub Actions, Slither, forge coverage, solhint, and Prettier
 
+## Local development
+
+```bash
+forge build
+forge test -vv
+forge fmt --check
+
 ## Tech Stack
 
 * Solidity
@@ -49,3 +56,4 @@ The protocol follows modern DeFi engineering standards with modular contracts, u
 ## Team Goal
 
 To design, implement, audit, and deploy a complete production-style decentralized finance protocol demonstrating advanced smart contract engineering and full-stack Web3 development.
+
