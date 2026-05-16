@@ -9,11 +9,7 @@ contract UpgradeableProtocolConfig is Initializable, UUPSUpgradeable, OwnableUpg
     uint256 public feeBps;
     string public protocolName;
 
-    function initialize(
-        address initialOwner,
-        uint256 initialFeeBps,
-        string calldata initialName
-    ) external initializer {
+    function initialize(address initialOwner, uint256 initialFeeBps, string calldata initialName) external initializer {
         __Ownable_init(initialOwner);
         feeBps = initialFeeBps;
         protocolName = initialName;

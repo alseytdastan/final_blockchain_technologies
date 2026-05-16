@@ -15,10 +15,7 @@ contract AdvancedSolidityRequirementsTest is Test {
 
     function testUUPSUpgradePathV1ToV2() external {
         UpgradeableProtocolConfig v1Implementation = new UpgradeableProtocolConfig();
-        bytes memory initData = abi.encodeCall(
-            UpgradeableProtocolConfig.initialize,
-            (owner, 30, "Option A Config")
-        );
+        bytes memory initData = abi.encodeCall(UpgradeableProtocolConfig.initialize, (owner, 30, "Option A Config"));
         ERC1967Proxy proxy = new ERC1967Proxy(address(v1Implementation), initData);
 
         UpgradeableProtocolConfig proxiedV1 = UpgradeableProtocolConfig(address(proxy));
@@ -50,12 +47,7 @@ contract AdvancedSolidityRequirementsTest is Test {
         assertEq(AMMPool(poolCreate).creator(), address(this));
 
         bytes32 salt = keccak256("OPTION_A_POOL_SALT");
-        address predicted = factory.predictDeterministicAddress(
-            tokenA,
-            tokenB,
-            address(this),
-            salt
-        );
+        address predicted = factory.predictDeterministicAddress(tokenA, tokenB, address(this), salt);
         address poolCreate2 = factory.createPoolDeterministic(tokenA, tokenB, salt);
 
         assertEq(poolCreate2, predicted);

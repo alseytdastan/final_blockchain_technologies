@@ -23,10 +23,7 @@ contract ProtocolBootstrapTest is Test {
         vm.prank(owner);
         bootstrap.registerModule(ProtocolTreasury.Module.AMM, ammAddress);
 
-        assertEq(
-            bootstrap.moduleAddress(ProtocolTreasury.Module.AMM),
-            ammAddress
-        );
+        assertEq(bootstrap.moduleAddress(ProtocolTreasury.Module.AMM), ammAddress);
     }
 
     function testRevertWhenNonOwnerRegistersModule() external {
@@ -45,12 +42,7 @@ contract ProtocolBootstrapTest is Test {
         vm.startPrank(owner);
         bootstrap.registerModule(ProtocolTreasury.Module.AMM, ammAddress);
 
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                ProtocolTreasury.ModuleAlreadySet.selector,
-                ProtocolTreasury.Module.AMM
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(ProtocolTreasury.ModuleAlreadySet.selector, ProtocolTreasury.Module.AMM));
         bootstrap.registerModule(ProtocolTreasury.Module.AMM, address(0x1234));
         vm.stopPrank();
     }
