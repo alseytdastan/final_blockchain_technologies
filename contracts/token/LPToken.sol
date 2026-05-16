@@ -22,4 +22,11 @@ contract LPToken {
         balanceOf[to] += amount;
         emit Transfer(address(0), to, amount);
     }
+
+    function burn(address from, uint256 amount) external {
+        require(msg.sender == pool, "ONLY_POOL");
+        balanceOf[from] -= amount;
+        totalSupply -= amount;
+        emit Transfer(from, address(0), amount);
+    }
 }
