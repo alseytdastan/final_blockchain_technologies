@@ -28,6 +28,20 @@ The platform combines a Constant Product AMM, ERC-4626 Yield Vault, DAO Governan
 forge build
 forge test -vv
 forge fmt --check
+```
+
+## Course approval
+
+- **Scenario:** Option A — DeFi Super-App
+- **Status:** Pending instructor approval (update date when confirmed)
+
+## Team roster
+
+| Member | GitHub | Responsibility |
+|--------|--------|----------------|
+| Dastan | @alseytdastan | AMM, lending, ERC-4626 vault |
+| Nursultan | @kimblied | Governance, security, audit |
+| Akylbek | @sabyrzzhan | Frontend, subgraph, deploy, CI |
 
 ## Tech Stack
 
