@@ -1,21 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract YieldVault {
-    address public immutable asset;
-    mapping(address => uint256) public shares;
-    uint256 public totalShares;
+import {IERC20} from "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import {ERC4626} from "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC4626.sol";
+import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
-    event Deposited(address indexed account, uint256 assets, uint256 sharesMinted);
+/// @title YieldVault
+/// @notice ERC-4626 tokenized vault over a single underlying ERC-20 asset.
+contract YieldVault is ERC4626, Ownable {
+    constructor(IERC20 asset_, address owner_) ERC4626(asset_) ERC20("DeFiHub Yield Vault", "dhYV") Ownable(owner_) {}
 
-    constructor(address asset_) {
-        asset = asset_;
-    }
-
-    function recordDeposit(address account, uint256 assets) external returns (uint256 sharesMinted) {
-        sharesMinted = assets;
-        shares[account] += sharesMinted;
-        totalShares += sharesMinted;
-        emit Deposited(account, assets, sharesMinted);
+    /// @dev Mitigates ERC-4626 inflation attack (OpenZeppelin recommendation).
+    function _decimalsOffset() internal pure override returns (uint8) {
+        return 3;
     }
 }
