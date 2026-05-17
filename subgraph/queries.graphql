@@ -1,0 +1,57 @@
+# 1. Recent swaps for the AMM.
+query RecentSwaps {
+  swaps(first: 10, orderBy: timestamp, orderDirection: desc) {
+    id
+    sender
+    tokenIn
+    tokenOut
+    amountIn
+    amountOut
+    timestamp
+  }
+}
+
+# 2. Pool activity counters.
+query Pools {
+  pools(first: 10) {
+    id
+    tokenA
+    tokenB
+    totalSwaps
+    totalLiquidityEvents
+  }
+}
+
+# 3. Vault account balances by indexed deltas.
+query VaultAccounts {
+  vaultAccounts(first: 10, orderBy: updatedAt, orderDirection: desc) {
+    owner
+    totalDeposited
+    totalWithdrawn
+    shareBalanceDelta
+  }
+}
+
+# 4. Lending positions.
+query LoanPositions {
+  loanPositions(first: 10, orderBy: updatedAt, orderDirection: desc) {
+    user
+    collateralDeposited
+    collateralWithdrawn
+    borrowed
+    repaid
+    liquidatedDebt
+    collateralSeized
+  }
+}
+
+# 5. Recent liquidations.
+query RecentLiquidations {
+  loanActions(first: 10, where: { actionType: "LIQUIDATED" }, orderBy: timestamp, orderDirection: desc) {
+    user
+    actor
+    amount
+    secondaryAmount
+    transactionHash
+  }
+}

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeFiHub Protocol</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Option A DeFi Super-App</p>
+          <h1>DeFiHub Protocol</h1>
+        </div>
+        <div class="wallet">
+          <span id="networkStatus" class="status warn">Wallet disconnected</span>
+          <button id="connectBtn">Connect MetaMask</button>
+          <button id="switchBtn" class="secondary">Switch Network</button>
+        </div>
+      </header>
+
+      <section id="message" class="message hidden"></section>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>Account</h2>
+          <dl>
+            <div><dt>Address</dt><dd id="account">-</dd></div>
+            <div><dt>Token A balance</dt><dd id="tokenBalance">-</dd></div>
+            <div><dt>Voting power</dt><dd id="votingPower">-</dd></div>
+            <div><dt>Delegate</dt><dd id="delegate">-</dd></div>
+          </dl>
+          <button id="delegateBtn" class="wide">Delegate to self</button>
+        </article>
+
+        <article class="panel">
+          <h2>Protocol State</h2>
+          <dl>
+            <div><dt>Pool reserve A</dt><dd id="reserveA">-</dd></div>
+            <div><dt>Pool reserve B</dt><dd id="reserveB">-</dd></div>
+            <div><dt>Vault shares</dt><dd id="vaultShares">-</dd></div>
+            <div><dt>Proposal threshold</dt><dd id="proposalThreshold">-</dd></div>
+          </dl>
+          <button id="refreshBtn" class="wide secondary">Refresh</button>
+        </article>
+
+        <article class="panel">
+          <h2>Swap</h2>
+          <label>Amount in Token A</label>
+          <input id="swapAmount" inputmode="decimal" placeholder="1.0" />
+          <label>Minimum Token B out</label>
+          <input id="swapMinOut" inputmode="decimal" placeholder="0.9" />
+          <button id="swapBtn" class="wide">Swap A to B</button>
+        </article>
+
+        <article class="panel">
+          <h2>Vault</h2>
+          <label>Deposit Token A</label>
+          <input id="depositAmount" inputmode="decimal" placeholder="10.0" />
+          <button id="depositBtn" class="wide">Deposit</button>
+        </article>
+
+        <article class="panel wide-panel">
+          <h2>Governance</h2>
+          <div class="proposal-row">
+            <input id="proposalId" placeholder="Proposal id" />
+            <select id="voteSupport">
+              <option value="1">For</option>
+              <option value="0">Against</option>
+              <option value="2">Abstain</option>
+            </select>
+            <button id="voteBtn">Vote</button>
+          </div>
+          <ul id="proposalList" class="list"></ul>
+        </article>
+
+        <article class="panel wide-panel">
+          <h2>Subgraph Activity</h2>
+          <button id="loadSubgraphBtn" class="secondary">Load Indexed Data</button>
+          <pre id="subgraphOutput">No indexed data loaded.</pre>
+        </article>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

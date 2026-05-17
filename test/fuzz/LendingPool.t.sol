@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 import {Test} from "forge-std/Test.sol";
 import {LendingPool} from "../../contracts/lending/LendingPool.sol";
 import {MockERC20} from "../../contracts/mocks/MockERC20.sol";
+import {ChainlinkPriceFeed} from "../../contracts/oracle/ChainlinkPriceFeed.sol";
 import {MockV3Aggregator} from "../../contracts/oracle/MockV3Aggregator.sol";
 
 contract LendingPoolFuzzTest is Test {
@@ -17,9 +18,10 @@ contract LendingPoolFuzzTest is Test {
         collateral = new MockERC20("Collateral", "COL");
         borrowToken = new MockERC20("Borrow USD", "BUSD");
         MockV3Aggregator feed = new MockV3Aggregator(8, int256(2000e8));
+        ChainlinkPriceFeed oracleAdapter = new ChainlinkPriceFeed(address(feed), 1 days);
 
         pool = new LendingPool(
-            address(collateral), address(borrowToken), address(feed), address(this), 7500, 8000, 1000, 500
+            address(collateral), address(borrowToken), address(oracleAdapter), address(this), 7500, 8000, 1000, 500
         );
 
         collateral.mint(user, 10_000 ether);

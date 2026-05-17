@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract ProtocolTimelock {
-    uint256 public immutable minDelay;
+import {TimelockController} from "openzeppelin-contracts/contracts/governance/TimelockController.sol";
 
-    constructor(uint256 minDelay_) {
-        minDelay = minDelay_;
-    }
+/// @title ProtocolTimelock
+/// @notice DAO execution delay controller. It should own treasury/admin roles after bootstrap.
+contract ProtocolTimelock is TimelockController {
+    constructor(uint256 minDelay, address[] memory proposers, address[] memory executors, address admin)
+        TimelockController(minDelay, proposers, executors, admin)
+    {}
 }
