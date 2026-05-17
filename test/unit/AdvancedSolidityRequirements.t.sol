@@ -22,12 +22,16 @@ contract AdvancedSolidityRequirementsTest is Test {
         assertEq(proxiedV1.feeBps(), 30);
         assertEq(proxiedV1.protocolName(), "Option A Config");
 
+        vm.prank(owner);
+        proxiedV1.setFeeBps(25);
+        assertEq(proxiedV1.feeBps(), 25);
+
         UpgradeableProtocolConfigV2 v2Implementation = new UpgradeableProtocolConfigV2();
         vm.prank(owner);
         proxiedV1.upgradeToAndCall(address(v2Implementation), "");
 
         UpgradeableProtocolConfigV2 proxiedV2 = UpgradeableProtocolConfigV2(address(proxy));
-        assertEq(proxiedV2.feeBps(), 30);
+        assertEq(proxiedV2.feeBps(), 25);
         assertEq(proxiedV2.protocolName(), "Option A Config");
         assertEq(proxiedV2.version(), "V2");
 
