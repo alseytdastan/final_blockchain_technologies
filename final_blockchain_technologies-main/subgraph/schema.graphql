@@ -1,4 +1,0 @@
-type Protocol @entity {
-  id: ID!
-  name: String!
-}
