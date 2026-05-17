@@ -164,4 +164,88 @@ contract LendingPoolTest is Test {
         vm.expectRevert(LendingPool.ZeroAmount.selector);
         pool.depositCollateral(0);
     }
+
+    function testHealthFactorMaxWhenNoDebt() public {
+        vm.prank(user);
+        pool.depositCollateral(5 ether);
+        assertEq(pool.healthFactor(user), type(uint256).max);
+    }
+
+    function testRevertInsufficientLiquidityOnBorrow() public {
+        LendingPool smallPool = new LendingPool(
+            address(collateral),
+            address(borrowToken),
+            address(new ChainlinkPriceFeed(address(feed), 1 days)),
+            address(this),
+            MAX_LTV_BPS,
+            LIQ_THRESHOLD_BPS,
+            BORROW_RATE_BPS,
+            LIQ_BONUS_BPS
+        );
+
+        vm.startPrank(user);
+        collateral.approve(address(smallPool), type(uint256).max);
+        smallPool.depositCollateral(10 ether);
+        vm.expectRevert(LendingPool.InsufficientLiquidity.selector);
+        smallPool.borrow(1 ether);
+        vm.stopPrank();
+    }
+
+    function testRevertInvalidPriceFromOracle() public {
+        vm.startPrank(user);
+        pool.depositCollateral(10 ether);
+        pool.borrow(1_000 ether);
+        feed.updateAnswer(-1);
+        vm.expectRevert(LendingPool.InvalidPrice.selector);
+        pool.healthFactor(user);
+        vm.stopPrank();
+    }
+
+    function testRepayCapsAtOutstandingDebt() public {
+        vm.startPrank(user);
+        pool.depositCollateral(10 ether);
+        pool.borrow(1_000 ether);
+        pool.repay(5_000 ether);
+        assertEq(pool.totalDebt(user), 0);
+        vm.stopPrank();
+    }
+
+    function testLiquidatePartialDebt() public {
+        vm.startPrank(user);
+        pool.depositCollateral(10 ether);
+        pool.borrow(14_000 ether);
+        feed.updateAnswer(int256(1000e8));
+        vm.stopPrank();
+
+        uint256 halfDebt = pool.totalDebt(user) / 2;
+        vm.prank(liquidator);
+        pool.liquidate(user, halfDebt);
+
+        assertGt(pool.totalDebt(user), 0);
+        assertLt(pool.totalDebt(user), halfDebt * 2);
+    }
+
+    function testRevertZeroBorrowRepayWithdrawLiquidate() public {
+        vm.startPrank(user);
+        pool.depositCollateral(1 ether);
+        vm.expectRevert(LendingPool.ZeroAmount.selector);
+        pool.borrow(0);
+        vm.expectRevert(LendingPool.ZeroAmount.selector);
+        pool.repay(0);
+        vm.expectRevert(LendingPool.ZeroAmount.selector);
+        pool.withdrawCollateral(0);
+        vm.stopPrank();
+
+        vm.prank(liquidator);
+        vm.expectRevert(LendingPool.ZeroAmount.selector);
+        pool.liquidate(user, 0);
+    }
+
+    function testRevertWithdrawMoreThanCollateral() public {
+        vm.startPrank(user);
+        pool.depositCollateral(1 ether);
+        vm.expectRevert(LendingPool.InsufficientCollateral.selector);
+        pool.withdrawCollateral(2 ether);
+        vm.stopPrank();
+    }
 }

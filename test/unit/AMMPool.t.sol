@@ -171,6 +171,35 @@ contract AMMPoolTest is Test {
         pool.addLiquidity(0, 100 ether, 0, 0);
     }
 
+    function testKView() public view {
+        assertEq(pool.k(), INITIAL_A * INITIAL_B);
+    }
+
+    function testRevertGetAmountOutInvalidToken() public {
+        vm.expectRevert(AMMPool.InvalidToken.selector);
+        pool.getAmountOut(address(0xBEEF), 1 ether);
+    }
+
+    function testAddLiquidityUsesOptimalAmountBranch() public {
+        vm.prank(lp);
+        (uint256 amountA, uint256 amountB,) = pool.addLiquidity(200 ether, 100 ether, 40 ether, 40 ether);
+
+        assertEq(amountA, 50 ether);
+        assertEq(amountB, 100 ether);
+    }
+
+    function testRevertRemoveLiquidityZero() public {
+        vm.prank(lp);
+        vm.expectRevert(AMMPool.ZeroAmount.selector);
+        pool.removeLiquidity(0, 0, 0);
+    }
+
+    function testRevertGetAmountOutOnEmptySide() public {
+        AMMPool emptyPool = new AMMPool(address(tokenA), address(tokenB), address(this));
+        vm.expectRevert(AMMPool.InsufficientLiquidity.selector);
+        emptyPool.getAmountOut(address(tokenA), 1 ether);
+    }
+
     function testGetAmountOutMatchesManualFormula() public view {
         uint256 amountIn = 123 ether;
         uint256 reserveIn = pool.reserveA();
