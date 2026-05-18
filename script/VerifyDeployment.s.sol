@@ -63,9 +63,7 @@ contract VerifyDeployment is Script {
         _checkEq("Treasury registers AMM", treasury.moduleAddress(ProtocolTreasury.Module.AMM), pool);
         _checkEq("Treasury registers Lending", treasury.moduleAddress(ProtocolTreasury.Module.Lending), lendingPoolAddr);
         _checkEq("Treasury registers Vault", treasury.moduleAddress(ProtocolTreasury.Module.Vault4626), vaultAddr);
-        _checkEq(
-            "Treasury registers Oracle", treasury.moduleAddress(ProtocolTreasury.Module.OracleAdapter), oracleAddr
-        );
+        _checkEq("Treasury registers Oracle", treasury.moduleAddress(ProtocolTreasury.Module.OracleAdapter), oracleAddr);
         _checkEq(
             "Treasury registers Governance", treasury.moduleAddress(ProtocolTreasury.Module.Governance), governorAddr
         );
