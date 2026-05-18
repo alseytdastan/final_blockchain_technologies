@@ -9,12 +9,12 @@ const TARGET_CHAIN = {
 // After deploy: copy addresses from deployments/arbitrum-sepolia.json
 const CONFIG = {
   subgraphUrl: "https://api.studio.thegraph.com/query/YOUR_SUBGRAPH_ID/defihub/version/latest",
-  tokenA: "0xEc0Cf7f5559431a1E757419804aD800Cb6d01ab9",
-  tokenB: "0x05aa36A6F5cCD450ae590b6780507975f8BdA0a9",
-  governanceToken: "0xd128e7BdDa0a96AF805839FaD4D5A22365Aea84b",
-  pool: "0x27a14e9c611080B52eaC4Bf59cBeD93d15978719",
-  vault: "0x280E3BcF84299D8f53eB7876a4daA2bAe9d40124",
-  governor: "0x930568ABa3Ac134bed2FDE34B162E60dBB09b136",
+  tokenA: "0x0F30c9FD7686Ed10bd8B46314334Bc54D3fdDea9",
+  tokenB: "0x26712554d047cB7cD9de4415c034d462e42E5bae",
+  governanceToken: "0xED26c0b3957DDa22875F6aFFc175d24E2c63b84e",
+  pool: "0x176de48AC9F70207023994929C35858070689129",
+  vault: "0xB25f3B93EaC9bE7EcC9eA6D5bF0B024A2FB6a45E",
+  governor: "0xb7B84a6fE169Da2C1A979048C831327B4071CE11",
   proposals: []
 };
 

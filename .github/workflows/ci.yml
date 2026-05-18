@@ -38,4 +38,19 @@ jobs:
         run: forge test -vvv
 
       - name: Run Forge coverage
-        run: forge coverage --report summary --ir-minimum
+        run: forge coverage --report summary
+
+      - name: Install Node lint tools
+        run: npm install --no-save prettier solhint
+
+      - name: Run solhint
+        run: npx solhint 'contracts/**/*.sol' 'script/**/*.sol'
+
+      - name: Run Prettier
+        run: npx prettier --check 'frontend/**/*.{html,css,js}' 'subgraph/**/*.{graphql,yaml,ts,json}' 'docs/**/*.md' 'README.md'
+
+      - name: Install Slither
+        run: pipx install slither-analyzer
+
+      - name: Run Slither
+        run: slither . --filter-paths 'lib|test|script'
