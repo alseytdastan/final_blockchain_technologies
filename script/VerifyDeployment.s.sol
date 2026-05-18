@@ -8,10 +8,6 @@ import {AMMPool} from "../contracts/amm/AMMPool.sol";
 import {ProtocolGovernor} from "../contracts/governance/ProtocolGovernor.sol";
 import {ProtocolTimelock} from "../contracts/governance/ProtocolTimelock.sol";
 import {ProtocolTreasury} from "../contracts/governance/ProtocolTreasury.sol";
-import {YieldVault} from "../contracts/vault/YieldVault.sol";
-import {LendingPool} from "../contracts/lending/LendingPool.sol";
-import {ProtocolAccessNFT} from "../contracts/token/ProtocolAccessNFT.sol";
-import {ChainlinkPriceFeed} from "../contracts/oracle/ChainlinkPriceFeed.sol";
 
 interface IOwnable {
     function owner() external view returns (address);
@@ -29,37 +25,37 @@ contract VerifyDeployment is Script {
         string memory path = _deploymentJsonPath();
         string memory json = vm.readFile(path);
 
-        address deployer = json.readAddress(".deployer");
-        address tokenA = json.readAddress(".tokenA");
-        address tokenB = json.readAddress(".tokenB");
-        address governanceToken = json.readAddress(".governanceToken");
+        _checkBytecode(json);
+        _checkGovernance(json);
+        _checkOwnership(json);
+        _checkPool(json);
+
+        console2.log("Deployment verification passed");
+        console2.log("timelock", json.readAddress(".timelock"));
+        console2.log("governor", json.readAddress(".governor"));
+        console2.log("treasury", json.readAddress(".treasury"));
+        console2.log("pool", json.readAddress(".pool"));
+    }
+
+    function _checkBytecode(string memory json) internal view {
+        _requireDeployed(json.readAddress(".treasury"), "treasury");
+        _requireDeployed(json.readAddress(".governanceToken"), "governance token");
+        _requireDeployed(json.readAddress(".vault"), "vault");
+        _requireDeployed(json.readAddress(".lendingPool"), "lending pool");
+        _requireDeployed(json.readAddress(".badge"), "badge");
+        _requireDeployed(json.readAddress(".configProxy"), "config proxy");
+        _requireDeployed(json.readAddress(".pool"), "AMM pool");
+        _requireDeployed(json.readAddress(".governor"), "governor");
+        _requireDeployed(json.readAddress(".timelock"), "timelock");
+    }
+
+    function _checkGovernance(string memory json) internal view {
         address timelockAddress = json.readAddress(".timelock");
         address governorAddress = json.readAddress(".governor");
-        address treasuryAddress = json.readAddress(".treasury");
-        address poolAddress = json.readAddress(".pool");
-        address vaultAddress = json.readAddress(".vault");
-        address lendingPoolAddress = json.readAddress(".lendingPool");
-        address badgeAddress = json.readAddress(".badge");
-        address configProxyAddress = json.readAddress(".configProxy");
-
         ProtocolTimelock timelock = ProtocolTimelock(payable(timelockAddress));
         ProtocolGovernor governor = ProtocolGovernor(payable(governorAddress));
-        ProtocolTreasury treasury = ProtocolTreasury(treasuryAddress);
-        AMMPool pool = AMMPool(poolAddress);
 
-        _requireDeployed(treasuryAddress, "treasury");
-        _requireDeployed(governanceToken, "governance token");
-        _requireDeployed(vaultAddress, "vault");
-        _requireDeployed(lendingPoolAddress, "lending pool");
-        _requireDeployed(badgeAddress, "badge");
-        _requireDeployed(configProxyAddress, "config proxy");
-        _requireDeployed(poolAddress, "AMM pool");
-        _requireDeployed(governorAddress, "governor");
-        _requireDeployed(timelockAddress, "timelock");
-
-        require(treasury.owner() == timelockAddress, "treasury owner is not timelock");
         require(timelock.getMinDelay() == TWO_DAYS, "timelock delay mismatch");
-
         require(governor.votingDelay() == 7_200, "governor voting delay mismatch");
         require(governor.votingPeriod() == 50_400, "governor voting period mismatch");
         require(governor.quorumNumerator() == 4, "governor quorum mismatch");
@@ -69,23 +65,36 @@ contract VerifyDeployment is Script {
         require(timelock.hasRole(timelock.PROPOSER_ROLE(), governorAddress), "governor missing proposer role");
         require(timelock.hasRole(timelock.CANCELLER_ROLE(), governorAddress), "governor missing canceller role");
         require(timelock.hasRole(timelock.EXECUTOR_ROLE(), address(0)), "executor role is not open");
-        require(!timelock.hasRole(timelock.DEFAULT_ADMIN_ROLE(), deployer), "deployer still has timelock admin");
+        require(
+            !timelock.hasRole(timelock.DEFAULT_ADMIN_ROLE(), json.readAddress(".deployer")),
+            "deployer still has timelock admin"
+        );
+    }
 
-        require(IOwnable(governanceToken).owner() == timelockAddress, "governance token owner is not timelock");
-        require(IOwnable(vaultAddress).owner() == timelockAddress, "vault owner is not timelock");
-        require(IOwnable(lendingPoolAddress).owner() == timelockAddress, "lending owner is not timelock");
-        require(IOwnable(badgeAddress).owner() == timelockAddress, "badge owner is not timelock");
-        require(IOwnable(configProxyAddress).owner() == timelockAddress, "config proxy owner is not timelock");
+    function _checkOwnership(string memory json) internal view {
+        address timelockAddress = json.readAddress(".timelock");
 
-        require(pool.tokenA() == tokenA, "pool tokenA mismatch");
-        require(pool.tokenB() == tokenB, "pool tokenB mismatch");
+        require(
+            ProtocolTreasury(json.readAddress(".treasury")).owner() == timelockAddress, "treasury owner is not timelock"
+        );
+        require(
+            IOwnable(json.readAddress(".governanceToken")).owner() == timelockAddress,
+            "governance token owner is not timelock"
+        );
+        require(IOwnable(json.readAddress(".vault")).owner() == timelockAddress, "vault owner is not timelock");
+        require(IOwnable(json.readAddress(".lendingPool")).owner() == timelockAddress, "lending owner is not timelock");
+        require(IOwnable(json.readAddress(".badge")).owner() == timelockAddress, "badge owner is not timelock");
+        require(
+            IOwnable(json.readAddress(".configProxy")).owner() == timelockAddress, "config proxy owner is not timelock"
+        );
+    }
+
+    function _checkPool(string memory json) internal view {
+        AMMPool pool = AMMPool(json.readAddress(".pool"));
+
+        require(pool.tokenA() == json.readAddress(".tokenA"), "pool tokenA mismatch");
+        require(pool.tokenB() == json.readAddress(".tokenB"), "pool tokenB mismatch");
         require(pool.reserveA() > 0 && pool.reserveB() > 0, "pool has no initial liquidity");
-
-        console2.log("Deployment verification passed");
-        console2.log("timelock", timelockAddress);
-        console2.log("governor", governorAddress);
-        console2.log("treasury", treasuryAddress);
-        console2.log("pool", poolAddress);
     }
 
     function _requireDeployed(address target, string memory label) internal view {
