@@ -1,19 +1,20 @@
 const TARGET_CHAIN = {
-  chainId: "0x14a34",
-  chainName: "Base Sepolia",
+  chainId: "0x66eee",
+  chainName: "Arbitrum Sepolia",
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-  rpcUrls: ["https://sepolia.base.org"],
-  blockExplorerUrls: ["https://sepolia.basescan.org"]
+  rpcUrls: ["https://sepolia-rollup.arbitrum.io/rpc"],
+  blockExplorerUrls: ["https://sepolia.arbiscan.io"]
 };
 
+// After deploy: copy addresses from deployments/arbitrum-sepolia.json
 const CONFIG = {
   subgraphUrl: "https://api.studio.thegraph.com/query/YOUR_SUBGRAPH_ID/defihub/version/latest",
-  tokenA: "0x0000000000000000000000000000000000000000",
-  tokenB: "0x0000000000000000000000000000000000000000",
-  governanceToken: "0x0000000000000000000000000000000000000000",
-  pool: "0x0000000000000000000000000000000000000000",
-  vault: "0x0000000000000000000000000000000000000000",
-  governor: "0x0000000000000000000000000000000000000000",
+  tokenA: "0xEc0Cf7f5559431a1E757419804aD800Cb6d01ab9",
+  tokenB: "0x05aa36A6F5cCD450ae590b6780507975f8BdA0a9",
+  governanceToken: "0xd128e7BdDa0a96AF805839FaD4D5A22365Aea84b",
+  pool: "0x27a14e9c611080B52eaC4Bf59cBeD93d15978719",
+  vault: "0x280E3BcF84299D8f53eB7876a4daA2bAe9d40124",
+  governor: "0x930568ABa3Ac134bed2FDE34B162E60dBB09b136",
   proposals: []
 };
 
