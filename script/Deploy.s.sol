@@ -62,6 +62,7 @@ contract Deploy is Script {
         _deployUpgradeableConfig();
         governanceToken.transferOwnership(address(timelock));
         _registerTreasuryModules();
+        treasury.transferOwnership(address(timelock));
         timelock.renounceRole(timelock.DEFAULT_ADMIN_ROLE(), deployer);
         _writeDeploymentArtifact(block.chainid);
         _logAddresses();

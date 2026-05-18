@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 import {Script, console2} from "forge-std/Script.sol";
+import {stdJson} from "forge-std/StdJson.sol";
 
 import {AMMPool} from "../contracts/amm/AMMPool.sol";
 import {ProtocolGovernor} from "../contracts/governance/ProtocolGovernor.sol";
@@ -18,27 +19,46 @@ interface IOwnable {
 
 /// @notice Post-deploy checks for course submission. Reads deployment JSON from DEPLOYMENT_JSON or by chain id.
 contract VerifyDeployment is Script {
+    using stdJson for string;
+
+    uint256 internal constant TWO_DAYS = 2 days;
+    uint256 internal constant BASE_SEPOLIA_CHAIN_ID = 84532;
+    uint256 internal constant ARBITRUM_SEPOLIA_CHAIN_ID = 421614;
+
     function run() external view {
-        address deployer = vm.envAddress("DEPLOYER");
-        address tokenA = vm.envAddress("TOKEN_A");
-        address tokenB = vm.envAddress("TOKEN_B");
-        address governanceToken = vm.envAddress("GOVERNANCE_TOKEN");
-        address timelockAddress = vm.envAddress("TIMELOCK");
-        address governorAddress = vm.envAddress("GOVERNOR");
-        address treasuryAddress = vm.envAddress("TREASURY");
-        address poolAddress = vm.envAddress("POOL");
-        address vaultAddress = vm.envAddress("VAULT");
-        address lendingPoolAddress = vm.envAddress("LENDING_POOL");
-        address badgeAddress = vm.envAddress("BADGE");
-        address configProxyAddress = vm.envAddress("CONFIG_PROXY");
+        string memory path = _deploymentJsonPath();
+        string memory json = vm.readFile(path);
+
+        address deployer = json.readAddress(".deployer");
+        address tokenA = json.readAddress(".tokenA");
+        address tokenB = json.readAddress(".tokenB");
+        address governanceToken = json.readAddress(".governanceToken");
+        address timelockAddress = json.readAddress(".timelock");
+        address governorAddress = json.readAddress(".governor");
+        address treasuryAddress = json.readAddress(".treasury");
+        address poolAddress = json.readAddress(".pool");
+        address vaultAddress = json.readAddress(".vault");
+        address lendingPoolAddress = json.readAddress(".lendingPool");
+        address badgeAddress = json.readAddress(".badge");
+        address configProxyAddress = json.readAddress(".configProxy");
 
         ProtocolTimelock timelock = ProtocolTimelock(payable(timelockAddress));
         ProtocolGovernor governor = ProtocolGovernor(payable(governorAddress));
         ProtocolTreasury treasury = ProtocolTreasury(treasuryAddress);
         AMMPool pool = AMMPool(poolAddress);
 
+        _requireDeployed(treasuryAddress, "treasury");
+        _requireDeployed(governanceToken, "governance token");
+        _requireDeployed(vaultAddress, "vault");
+        _requireDeployed(lendingPoolAddress, "lending pool");
+        _requireDeployed(badgeAddress, "badge");
+        _requireDeployed(configProxyAddress, "config proxy");
+        _requireDeployed(poolAddress, "AMM pool");
+        _requireDeployed(governorAddress, "governor");
+        _requireDeployed(timelockAddress, "timelock");
+
         require(treasury.owner() == timelockAddress, "treasury owner is not timelock");
-        require(timelock.getMinDelay() == 2 days, "timelock delay mismatch");
+        require(timelock.getMinDelay() == TWO_DAYS, "timelock delay mismatch");
 
         require(governor.votingDelay() == 7_200, "governor voting delay mismatch");
         require(governor.votingPeriod() == 50_400, "governor voting period mismatch");
@@ -66,5 +86,25 @@ contract VerifyDeployment is Script {
         console2.log("governor", governorAddress);
         console2.log("treasury", treasuryAddress);
         console2.log("pool", poolAddress);
+    }
+
+    function _requireDeployed(address target, string memory label) internal view {
+        require(target.code.length > 0, string.concat(label, " address has no bytecode on this network"));
+    }
+
+    function _deploymentJsonPath() internal view returns (string memory) {
+        try vm.envString("DEPLOYMENT_JSON") returns (string memory path) {
+            return path;
+        } catch {}
+
+        if (block.chainid == ARBITRUM_SEPOLIA_CHAIN_ID) {
+            return "deployments/arbitrum-sepolia.json";
+        }
+
+        if (block.chainid == BASE_SEPOLIA_CHAIN_ID) {
+            return "deployments/base-sepolia.json";
+        }
+
+        return string.concat("deployments/", vm.toString(block.chainid), ".json");
     }
 }

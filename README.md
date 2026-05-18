@@ -77,19 +77,19 @@ Requires `BASE_SEPOLIA_RPC_URL` and `BASESCAN_API_KEY` in `.env`.
 
 | Contract | Address | Explorer |
 |----------|---------|----------|
-| Mock USDC (`tokenA`) | `0xEc0Cf7f5559431a1E757419804aD800Cb6d01ab9` | [Arbiscan](https://sepolia.arbiscan.io/address/0xEc0Cf7f5559431a1E757419804aD800Cb6d01ab9) |
-| Mock WETH (`tokenB`) | `0x05aa36A6F5cCD450ae590b6780507975f8BdA0a9` | [Arbiscan](https://sepolia.arbiscan.io/address/0x05aa36A6F5cCD450ae590b6780507975f8BdA0a9) |
-| GovernanceToken (`DFH`) | `0xd128e7BdDa0a96AF805839FaD4D5A22365Aea84b` | [Arbiscan](https://sepolia.arbiscan.io/address/0xd128e7BdDa0a96AF805839FaD4D5A22365Aea84b) |
-| AMMPool | `0x27a14e9c611080B52eaC4Bf59cBeD93d15978719` | [Arbiscan](https://sepolia.arbiscan.io/address/0x27a14e9c611080B52eaC4Bf59cBeD93d15978719) |
-| YieldVault | `0x280E3BcF84299D8f53eB7876a4daA2bAe9d40124` | [Arbiscan](https://sepolia.arbiscan.io/address/0x280E3BcF84299D8f53eB7876a4daA2bAe9d40124) |
-| LendingPool | `0xC409d806B5B5d77d208b7538984DbE15325Dd59b` | [Arbiscan](https://sepolia.arbiscan.io/address/0xC409d806B5B5d77d208b7538984DbE15325Dd59b) |
-| ChainlinkPriceFeed adapter | `0x0e7Db0BD600bB8A3919302410F55ACA81B15632B` | [Arbiscan](https://sepolia.arbiscan.io/address/0x0e7Db0BD600bB8A3919302410F55ACA81B15632B) |
-| ProtocolGovernor | `0x930568ABa3Ac134bed2FDE34B162E60dBB09b136` | [Arbiscan](https://sepolia.arbiscan.io/address/0x930568ABa3Ac134bed2FDE34B162E60dBB09b136) |
-| ProtocolTimelock | `0x8E7354Cf8C131De13255F7ba3e4be253fc6308CF` | [Arbiscan](https://sepolia.arbiscan.io/address/0x8E7354Cf8C131De13255F7ba3e4be253fc6308CF) |
-| ProtocolTreasury | `0xB3eAf4CafF78809805642337100d1b1a5A4B6AC7` | [Arbiscan](https://sepolia.arbiscan.io/address/0xB3eAf4CafF78809805642337100d1b1a5A4B6AC7) |
-| ProtocolAccessNFT | `0x49b4d149473ca5e2CFb1B02584EAeD6C030eF6B4` | [Arbiscan](https://sepolia.arbiscan.io/address/0x49b4d149473ca5e2CFb1B02584EAeD6C030eF6B4) |
-| PoolFactory | `0x7612529B986E33e033C23016feEB6D29d27a6d26` | [Arbiscan](https://sepolia.arbiscan.io/address/0x7612529B986E33e033C23016feEB6D29d27a6d26) |
-| UUPS config proxy | `0x3907a81b9BA32855B48010087f68C70dbdCAE24C` | [Arbiscan](https://sepolia.arbiscan.io/address/0x3907a81b9BA32855B48010087f68C70dbdCAE24C) |
+| Mock USDC (`tokenA`) | `0x7abAE8a8217f77CA0EDb60bbd00297aD936a392c` | [Arbiscan](https://sepolia.arbiscan.io/address/0x7abAE8a8217f77CA0EDb60bbd00297aD936a392c) |
+| Mock WETH (`tokenB`) | `0xF9B62c21F0D9655CaEeC0A21DAeA9409B2678E1A` | [Arbiscan](https://sepolia.arbiscan.io/address/0xF9B62c21F0D9655CaEeC0A21DAeA9409B2678E1A) |
+| GovernanceToken (`DFH`) | `0xA0d618c8F07d823416fC98dCC54fc5850Bba3A77` | [Arbiscan](https://sepolia.arbiscan.io/address/0xA0d618c8F07d823416fC98dCC54fc5850Bba3A77) |
+| AMMPool | `0x03b1882CE3EB333A29806c66acD24AaeB7F8eC7B` | [Arbiscan](https://sepolia.arbiscan.io/address/0x03b1882CE3EB333A29806c66acD24AaeB7F8eC7B) |
+| YieldVault | `0x1F248BF5FFa817d5658253AF86ffCFB8e6710715` | [Arbiscan](https://sepolia.arbiscan.io/address/0x1F248BF5FFa817d5658253AF86ffCFB8e6710715) |
+| LendingPool | `0x89e6a15EA06342622b9cff3Ee5F1C1ed9a7102F9` | [Arbiscan](https://sepolia.arbiscan.io/address/0x89e6a15EA06342622b9cff3Ee5F1C1ed9a7102F9) |
+| ChainlinkPriceFeed adapter | `0x84e57E4034FBfbbd14Ee7ed7A1DAe797Bdc5c20d` | [Arbiscan](https://sepolia.arbiscan.io/address/0x84e57E4034FBfbbd14Ee7ed7A1DAe797Bdc5c20d) |
+| ProtocolGovernor | `0xdA6E681f08045391C9b342349bFd3DC263f2556F` | [Arbiscan](https://sepolia.arbiscan.io/address/0xdA6E681f08045391C9b342349bFd3DC263f2556F) |
+| ProtocolTimelock | `0xAeCF1aF0d940cFFf5da14296a010138891e5b1b3` | [Arbiscan](https://sepolia.arbiscan.io/address/0xAeCF1aF0d940cFFf5da14296a010138891e5b1b3) |
+| ProtocolTreasury | `0x8991EC3E7C563B7ED2cf32cDE04B604193a53D42` | [Arbiscan](https://sepolia.arbiscan.io/address/0x8991EC3E7C563B7ED2cf32cDE04B604193a53D42) |
+| ProtocolAccessNFT | `0x138678BDD4A68d461a91DD67eF9DbDFb0e653d58` | [Arbiscan](https://sepolia.arbiscan.io/address/0x138678BDD4A68d461a91DD67eF9DbDFb0e653d58) |
+| PoolFactory | `0xd51207288c2B803A3d365a04Bb7C316072a4a3FA` | [Arbiscan](https://sepolia.arbiscan.io/address/0xd51207288c2B803A3d365a04Bb7C316072a4a3FA) |
+| UUPS config proxy | `0xC7e28c8d9c94301Cc69167aBa69a6e0e5d86AB66` | [Arbiscan](https://sepolia.arbiscan.io/address/0xC7e28c8d9c94301Cc69167aBa69a6e0e5d86AB66) |
 
 Post-deploy check output: [`deployments/verification-arbitrum-sepolia.txt`](deployments/verification-arbitrum-sepolia.txt)
 

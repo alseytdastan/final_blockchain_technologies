@@ -6,10 +6,10 @@ The subgraph manifest is configured for Arbitrum Sepolia and the latest addresse
 
 | Data source | Address |
 |---|---|
-| PoolFactory | `0x7612529B986E33e033C23016feEB6D29d27a6d26` |
-| AMMPool | `0x27a14e9c611080B52eaC4Bf59cBeD93d15978719` |
-| YieldVault | `0x280E3BcF84299D8f53eB7876a4daA2bAe9d40124` |
-| LendingPool | `0xC409d806B5B5d77d208b7538984DbE15325Dd59b` |
+| PoolFactory | `0xd51207288c2B803A3d365a04Bb7C316072a4a3FA` |
+| AMMPool | `0x03b1882CE3EB333A29806c66acD24AaeB7F8eC7B` |
+| YieldVault | `0x1F248BF5FFa817d5658253AF86ffCFB8e6710715` |
+| LendingPool | `0x89e6a15EA06342622b9cff3Ee5F1C1ed9a7102F9` |
 
 ## Build
 
