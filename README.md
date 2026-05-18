@@ -63,6 +63,36 @@ DEPLOYMENT_JSON=deployments/arbitrum-sepolia.json \
   | tee deployments/verification-arbitrum-sepolia.txt
 ```
 
+Notes on `DEPLOYMENT_JSON` and `ETHERSCAN_API_KEY`:
+
+- `DEPLOYMENT_JSON` (optional): if set, `script/VerifyDeployment.s.sol` will read the specified JSON file instead of the default. Example:
+
+```bash
+DEPLOYMENT_JSON=deployments/arbitrum-sepolia.json \
+  forge script script/VerifyDeployment.s.sol:VerifyDeployment --rpc-url "$ARBITRUM_SEPOLIA_RPC_URL"
+```
+
+- `ETHERSCAN_API_KEY`: required for Foundry's `--verify` flag to publish source code to Arbiscan/Etherscan. Add it to your local `.env` (do not commit) and export before running deploy scripts:
+
+```bash
+export ETHERSCAN_API_KEY=your_api_key_here
+source .env
+forge script script/Deploy.s.sol:Deploy --rpc-url "$ARBITRUM_SEPOLIA_RPC_URL" --broadcast --verify
+```
+
+- CI / GitHub Actions: Add a repository secret named `ETHERSCAN_API_KEY` in the repository Settings → Secrets → Actions. Example workflow snippet uses the secret as `${{ secrets.ETHERSCAN_API_KEY }}`. Ensure your workflow sets the env var before running `forge script --verify`.
+
+Example GitHub Actions env usage:
+
+```yaml
+env:
+  ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+  PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+  ARBITRUM_SEPOLIA_RPC_URL: ${{ secrets.ARBITRUM_SEPOLIA_RPC_URL }}
+```
+
+After deploy, addresses are saved to `deployments/arbitrum-sepolia.json`. Update the table below and `frontend/app.js` (`CONFIG`).
+
 After deploy, addresses are saved to `deployments/arbitrum-sepolia.json`. Update the table below and `frontend/app.js` (`CONFIG`).
 
 ### Base Sepolia (optional)
