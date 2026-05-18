@@ -5,9 +5,9 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: PoolFactory
-    network: base-sepolia
+    network: arbitrum-sepolia
     source:
-      address: "0x0000000000000000000000000000000000000000"
+      address: "0xF9eDd2Fbd47AA7484C2DB84495eE86403f54d40c"
       abi: PoolFactory
       startBlock: 0
     mapping:
@@ -25,9 +25,9 @@ dataSources:
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: AMMPool
-    network: base-sepolia
+    network: arbitrum-sepolia
     source:
-      address: "0x0000000000000000000000000000000000000000"
+      address: "0x176de48AC9F70207023994929C35858070689129"
       abi: AMMPool
       startBlock: 0
     mapping:
@@ -51,9 +51,9 @@ dataSources:
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: YieldVault
-    network: base-sepolia
+    network: arbitrum-sepolia
     source:
-      address: "0x0000000000000000000000000000000000000000"
+      address: "0xB25f3B93EaC9bE7EcC9eA6D5bF0B024A2FB6a45E"
       abi: YieldVault
       startBlock: 0
     mapping:
@@ -74,9 +74,9 @@ dataSources:
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: LendingPool
-    network: base-sepolia
+    network: arbitrum-sepolia
     source:
-      address: "0x0000000000000000000000000000000000000000"
+      address: "0x0617Df7A719B5c571619B6A6E32b113EB637b6E8"
       abi: LendingPool
       startBlock: 0
     mapping:
