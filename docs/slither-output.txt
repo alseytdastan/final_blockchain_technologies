@@ -1,0 +1,51 @@
+'forge clean' running (wd: /Users/admin/Desktop/Новая папка 8/final_blockchain_technologies)
+'forge config --json' running
+'forge build --build-info --skip ./test/** ./script/** --force' running (wd: /Users/admin/Desktop/Новая папка 8/final_blockchain_technologies)
+INFO:Detectors:
+Detector: timestamp
+AMMPool.swapExactTokensForTokens(address,uint256,uint256,uint256) (contracts/amm/AMMPool.sol#88-115) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp > deadline (contracts/amm/AMMPool.sol#93)
+LendingPool.liquidate(address,uint256) (contracts/lending/LendingPool.sol#124-143) uses timestamp for comparisons
+	Dangerous comparisons:
+	- debt < 1 || _isHealthy(borrower) (contracts/lending/LendingPool.sol#130)
+LendingPool.healthFactor(address) (contracts/lending/LendingPool.sol#150-156) uses timestamp for comparisons
+	Dangerous comparisons:
+	- debt < 1 (contracts/lending/LendingPool.sol#152)
+LendingPool._accrueInterest(address) (contracts/lending/LendingPool.sol#158-171) uses timestamp for comparisons
+	Dangerous comparisons:
+	- elapsed < 1 (contracts/lending/LendingPool.sol#166)
+LendingPool._totalDebt(address) (contracts/lending/LendingPool.sol#173-180) uses timestamp for comparisons
+	Dangerous comparisons:
+	- account.principal < 1 (contracts/lending/LendingPool.sol#175)
+LendingPool._collateralValueInBorrowAsset(address) (contracts/lending/LendingPool.sol#182-192) uses timestamp for comparisons
+	Dangerous comparisons:
+	- amount < 1 (contracts/lending/LendingPool.sol#184)
+LendingPool._withinLtv(address,uint256) (contracts/lending/LendingPool.sol#204-207) uses timestamp for comparisons
+	Dangerous comparisons:
+	- newDebt <= maxBorrow (contracts/lending/LendingPool.sol#206)
+LendingPool._isHealthy(address) (contracts/lending/LendingPool.sol#209-211) uses timestamp for comparisons
+	Dangerous comparisons:
+	- healthFactor(user) >= BPS (contracts/lending/LendingPool.sol#210)
+ChainlinkPriceFeed._validate(uint80,int256,uint256,uint256,uint80) (contracts/oracle/ChainlinkPriceFeed.sol#53-62) uses timestamp for comparisons
+	Dangerous comparisons:
+	- maxStaleness != 0 && block.timestamp - updatedAt > maxStaleness (contracts/oracle/ChainlinkPriceFeed.sol#59)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+INFO:Detectors:
+Detector: assembly
+MathUtils.maxYul(uint256,uint256) (contracts/utils/MathUtils.sol#9-14) uses assembly
+	- INLINE ASM (contracts/utils/MathUtils.sol#10-13)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+INFO:Detectors:
+Detector: too-many-digits
+PoolFactory.predictDeterministicAddress(address,address,address,bytes32) (contracts/amm/PoolFactory.sol#19-28) uses literals with too many digits:
+	- bytecode = abi.encodePacked(type()(AMMPool).creationCode,abi.encode(tokenA,tokenB,creator)) (contracts/amm/PoolFactory.sol#24)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+INFO:Detectors:
+Detector: immutable-states
+LendingPool.borrowRateBpsPerYear (contracts/lending/LendingPool.sol#25) should be immutable 
+LendingPool.liquidationBonusBps (contracts/lending/LendingPool.sol#26) should be immutable 
+LendingPool.liquidationThresholdBps (contracts/lending/LendingPool.sol#24) should be immutable 
+LendingPool.maxLtvBps (contracts/lending/LendingPool.sol#23) should be immutable 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-immutable
+INFO:Slither:. analyzed (91 contracts with 101 detectors), 15 result(s) found

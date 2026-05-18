@@ -127,7 +127,7 @@ contract LendingPool is ReentrancyGuard, Ownable {
 
         Account storage account = accounts[borrower];
         uint256 debt = account.principal;
-        if (debt == 0 || _isHealthy(borrower)) revert HealthyAccount();
+        if (debt < 1 || _isHealthy(borrower)) revert HealthyAccount();
 
         uint256 actualRepay = debtToCover > debt ? debt : debtToCover;
         uint256 collateralSeized = _collateralForDebt(actualRepay);
@@ -149,7 +149,7 @@ contract LendingPool is ReentrancyGuard, Ownable {
     /// @notice Health factor scaled by BPS (10000 = 1.0). Max uint if no debt.
     function healthFactor(address user) public view returns (uint256) {
         uint256 debt = _totalDebt(user);
-        if (debt == 0) return type(uint256).max;
+        if (debt < 1) return type(uint256).max;
 
         uint256 collateralValue = _collateralValueInBorrowAsset(user);
         return (collateralValue * liquidationThresholdBps) / debt;
@@ -157,13 +157,13 @@ contract LendingPool is ReentrancyGuard, Ownable {
 
     function _accrueInterest(address user) internal {
         Account storage account = accounts[user];
-        if (account.principal == 0) {
+        if (account.principal < 1) {
             account.lastAccrual = block.timestamp;
             return;
         }
 
         uint256 elapsed = block.timestamp - account.lastAccrual;
-        if (elapsed == 0) return;
+        if (elapsed < 1) return;
 
         uint256 interest = (account.principal * borrowRateBpsPerYear * elapsed) / (BPS * SECONDS_PER_YEAR);
         account.principal += interest;
@@ -172,7 +172,7 @@ contract LendingPool is ReentrancyGuard, Ownable {
 
     function _totalDebt(address user) internal view returns (uint256) {
         Account memory account = accounts[user];
-        if (account.principal == 0) return 0;
+        if (account.principal < 1) return 0;
 
         uint256 elapsed = block.timestamp - account.lastAccrual;
         uint256 interest = (account.principal * borrowRateBpsPerYear * elapsed) / (BPS * SECONDS_PER_YEAR);
@@ -181,7 +181,7 @@ contract LendingPool is ReentrancyGuard, Ownable {
 
     function _collateralValueInBorrowAsset(address user) internal view returns (uint256) {
         uint256 amount = accounts[user].collateral;
-        if (amount == 0) return 0;
+        if (amount < 1) return 0;
 
         int256 price = collateralPriceFeed.latestAnswer();
         if (price <= 0) revert InvalidPrice();

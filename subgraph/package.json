@@ -1,0 +1,15 @@
+{
+  "name": "defihub-subgraph",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "auth": "graph auth --studio $GRAPH_DEPLOY_KEY",
+    "deploy": "graph deploy --studio defihub"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.97.1",
+    "@graphprotocol/graph-ts": "^0.38.1"
+  }
+}

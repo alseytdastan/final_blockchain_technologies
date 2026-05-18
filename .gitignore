@@ -2,6 +2,7 @@
 cache/
 out/
 .tools/
+.venv/
 
 # Ignores development broadcast logs
 !/broadcast

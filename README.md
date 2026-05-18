@@ -93,10 +93,12 @@ Requires `BASE_SEPOLIA_RPC_URL` and `BASESCAN_API_KEY` in `.env`.
 
 Post-deploy check output: [`deployments/verification-arbitrum-sepolia.txt`](deployments/verification-arbitrum-sepolia.txt)
 
+Subgraph deployment instructions and required query checks are in [`docs/SUBGRAPH_DEPLOYMENT.md`](docs/SUBGRAPH_DEPLOYMENT.md).
+
 ## Course approval
 
 - **Scenario:** Option A — DeFi Super-App
-- **Status:** Pending instructor approval (update date when confirmed)
+- **Status:** Scenario selected; Arbitrum Sepolia deployment artifact included
 
 ## Team roster
 
@@ -113,8 +115,8 @@ Post-deploy check output: [`deployments/verification-arbitrum-sepolia.txt`](depl
 * OpenZeppelin
 * Chainlink
 * The Graph
-* React + Wagmi + Viem
-* TypeScript
+* HTML/CSS/JavaScript frontend
+* Ethers.js
 * GitHub Actions
 
 ## Security
@@ -133,4 +135,3 @@ The protocol follows modern DeFi engineering standards with modular contracts, u
 ## Team Goal
 
 To design, implement, audit, and deploy a complete production-style decentralized finance protocol demonstrating advanced smart contract engineering and full-stack Web3 development.
-

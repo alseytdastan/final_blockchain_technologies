@@ -7,7 +7,7 @@ dataSources:
     name: PoolFactory
     network: arbitrum-sepolia
     source:
-      address: "0xF9eDd2Fbd47AA7484C2DB84495eE86403f54d40c"
+      address: "0x7612529B986E33e033C23016feEB6D29d27a6d26"
       abi: PoolFactory
       startBlock: 0
     mapping:
@@ -27,7 +27,7 @@ dataSources:
     name: AMMPool
     network: arbitrum-sepolia
     source:
-      address: "0x176de48AC9F70207023994929C35858070689129"
+      address: "0x27a14e9c611080B52eaC4Bf59cBeD93d15978719"
       abi: AMMPool
       startBlock: 0
     mapping:
@@ -53,7 +53,7 @@ dataSources:
     name: YieldVault
     network: arbitrum-sepolia
     source:
-      address: "0xB25f3B93EaC9bE7EcC9eA6D5bF0B024A2FB6a45E"
+      address: "0x280E3BcF84299D8f53eB7876a4daA2bAe9d40124"
       abi: YieldVault
       startBlock: 0
     mapping:
@@ -76,7 +76,7 @@ dataSources:
     name: LendingPool
     network: arbitrum-sepolia
     source:
-      address: "0x0617Df7A719B5c571619B6A6E32b113EB637b6E8"
+      address: "0xC409d806B5B5d77d208b7538984DbE15325Dd59b"
       abi: LendingPool
       startBlock: 0
     mapping:

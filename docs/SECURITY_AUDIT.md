@@ -4,7 +4,7 @@
 
 This internal audit reviews the DeFiHub Option A protocol: AMM, lending pool, ERC-4626 vault, governance, timelock, oracle adapter, upgradeable config, ERC-721 badge, deployment scripts, and subgraph/frontend integration.
 
-No Critical, High, or Medium issues are currently known from manual review. Slither must still be executed in CI and its final output attached before submission.
+No Critical, High, or Medium issues are currently known from manual review. Slither output is attached in `docs/slither-output.txt` and the CI job fails on Medium-or-higher findings.
 
 ## Scope
 
@@ -38,7 +38,7 @@ Out of scope:
 - Foundry unit, fuzz, invariant, and fork tests.
 - Vulnerability case study tests for reentrancy and access control.
 - Coverage review with `forge coverage`.
-- Slither static analysis required before final submission.
+- Slither static analysis with `--fail-medium`.
 
 ## Findings Table
 
@@ -48,6 +48,8 @@ Out of scope:
 | S-02 | Informational | Testnet mock oracle is not a production Chainlink feed | Acknowledged |
 | S-03 | Gas | CREATE2 address prediction hashes dynamic bytecode in Solidity | Acknowledged |
 | S-04 | Informational | Some immutable names do not follow forge lint SCREAMING_SNAKE_CASE style | Acknowledged |
+| S-05 | Low | Slither timestamp warnings are protocol deadline, interest accrual, and stale oracle checks | Acknowledged |
+| S-06 | Optimization | Lending pool risk parameters could be immutable | Acknowledged |
 
 ## Finding Details
 
@@ -103,6 +105,32 @@ Recommendation: Rename in a style-only pass if desired.
 
 Status: Acknowledged.
 
+### S-05: Slither Timestamp Warnings
+
+Severity: Low  
+Location: `contracts/amm/AMMPool.sol`, `contracts/lending/LendingPool.sol`, `contracts/oracle/ChainlinkPriceFeed.sol`
+
+Description: Slither reports timestamp comparisons for swap deadlines, linear interest accrual, health checks, and oracle staleness checks.
+
+Impact: These uses are not randomness sources. They are bounded time checks required by the assignment and by normal DeFi UX.
+
+Recommendation: Keep as-is and document that `block.timestamp` is not used for randomness.
+
+Status: Acknowledged.
+
+### S-06: Lending Pool Risk Parameters Could Be Immutable
+
+Severity: Optimization  
+Location: `contracts/lending/LendingPool.sol`
+
+Description: Slither reports `maxLtvBps`, `liquidationThresholdBps`, `borrowRateBpsPerYear`, and `liquidationBonusBps` as candidates for `immutable`.
+
+Impact: Keeping them as storage values costs slightly more gas but preserves the protocol design option for future DAO-governed parameter updates.
+
+Recommendation: Keep as storage and require Timelock-governed setters before production parameter changes are enabled.
+
+Status: Acknowledged.
+
 ## Centralization Analysis
 
 The Timelock owns privileged contracts after deployment. The deployer no longer has `DEFAULT_ADMIN_ROLE` on the Timelock after bootstrap. Governance token ownership is transferred to the Timelock, so future minting or privileged changes must pass through DAO execution.
@@ -145,10 +173,10 @@ Tests: `testCaseStudy_AccessControlBeforeAllowsUnauthorizedParameterChange` and 
 
 ## Slither Appendix
 
-Final Slither output must be attached after running:
+Final Slither output is attached in `docs/slither-output.txt`. It was generated with:
 
 ```bash
-slither . --filter-paths "lib|test|script"
+VIRTUAL_ENV="$PWD/.venv" slither . --filter-paths "lib|test|script"
 ```
 
-Submission requirement: zero High and zero Medium findings. Low and Informational findings must be listed above or in this appendix.
+Summary: zero High findings and zero Medium findings. Remaining findings are Low timestamp warnings, Informational assembly / literal formatting notes, and Optimization notes listed above.

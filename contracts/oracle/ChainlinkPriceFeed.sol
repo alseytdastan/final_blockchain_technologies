@@ -14,7 +14,7 @@ interface IChainlinkAggregatorV3 {
 
 /// @title ChainlinkPriceFeed
 /// @notice Thin oracle adapter that rejects invalid, incomplete, or stale Chainlink rounds.
-contract ChainlinkPriceFeed is IPriceFeed {
+contract ChainlinkPriceFeed is IPriceFeed, IChainlinkAggregatorV3 {
     IChainlinkAggregatorV3 public immutable aggregator;
     uint256 public immutable maxStaleness;
 
@@ -29,28 +29,33 @@ contract ChainlinkPriceFeed is IPriceFeed {
         maxStaleness = maxStaleness_;
     }
 
-    function latestAnswer() external view returns (int256) {
-        (, int256 answer,, uint256 updatedAt, uint80 answeredInRound) = aggregator.latestRoundData();
-        _validate(answer, updatedAt, answeredInRound);
+    function latestAnswer() external view override returns (int256) {
+        (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) =
+            aggregator.latestRoundData();
+        _validate(roundId, answer, startedAt, updatedAt, answeredInRound);
         return answer;
     }
 
-    function decimals() external view returns (uint8) {
+    function decimals() external view override(IPriceFeed, IChainlinkAggregatorV3) returns (uint8) {
         return aggregator.decimals();
     }
 
     function latestRoundData()
         external
         view
+        override
         returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
     {
         (roundId, answer, startedAt, updatedAt, answeredInRound) = aggregator.latestRoundData();
-        _validate(answer, updatedAt, answeredInRound);
+        _validate(roundId, answer, startedAt, updatedAt, answeredInRound);
     }
 
-    function _validate(int256 answer, uint256 updatedAt, uint80 answeredInRound) internal view {
+    function _validate(uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+        internal
+        view
+    {
         if (answer <= 0) revert InvalidPrice();
-        if (updatedAt == 0 || answeredInRound == 0) revert IncompleteRound();
+        if (roundId == 0 || startedAt == 0 || updatedAt == 0 || answeredInRound < roundId) revert IncompleteRound();
         if (maxStaleness != 0 && block.timestamp - updatedAt > maxStaleness) {
             revert StalePrice(updatedAt, maxStaleness);
         }

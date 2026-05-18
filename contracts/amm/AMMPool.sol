@@ -35,11 +35,13 @@ contract AMMPool is ReentrancyGuard {
     error InsufficientLiquidity();
     error InsufficientLiquidityMinted();
     error InvalidToken();
+    error InvalidCreator();
     error ZeroAmount();
 
     constructor(address _tokenA, address _tokenB, address _creator) {
         require(_tokenA != _tokenB, "IDENTICAL_TOKENS");
         require(_tokenA != address(0) && _tokenB != address(0), "ZERO_ADDRESS");
+        if (_creator == address(0)) revert InvalidCreator();
         tokenA = _tokenA;
         tokenB = _tokenB;
         creator = _creator;
@@ -73,9 +75,9 @@ contract AMMPool is ReentrancyGuard {
 
         if (amountA < amountAMin || amountB < amountBMin) revert InsufficientLiquidity();
 
-        lpToken.burn(msg.sender, liquidity);
         reserveA -= amountA;
         reserveB -= amountB;
+        lpToken.burn(msg.sender, liquidity);
 
         _transferOut(tokenA, msg.sender, amountA);
         _transferOut(tokenB, msg.sender, amountB);
