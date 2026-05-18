@@ -8,7 +8,7 @@ const TARGET_CHAIN = {
 
 // After deploy: copy addresses from deployments/arbitrum-sepolia.json
 const CONFIG = {
-  subgraphUrl: "https://api.studio.thegraph.com/query/YOUR_SUBGRAPH_ID/defihub/version/latest",
+  subgraphUrl: "https://api.studio.thegraph.com/query/e8af44be2560e092ff8222b3eae88642/defihub/version/latest",
   tokenA: "0x7abAE8a8217f77CA0EDb60bbd00297aD936a392c",
   tokenB: "0xF9B62c21F0D9655CaEeC0A21DAeA9409B2678E1A",
   governanceToken: "0xA0d618c8F07d823416fC98dCC54fc5850Bba3A77",

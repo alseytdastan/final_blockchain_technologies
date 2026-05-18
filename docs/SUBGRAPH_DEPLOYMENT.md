@@ -33,7 +33,7 @@ npm run auth
 npm run deploy
 ```
 
-After publishing, replace `YOUR_SUBGRAPH_ID` in `frontend/app.js` with the numeric Studio query id:
+After publishing, replace `e8af44be2560e092ff8222b3eae88642` in `frontend/app.js` with the numeric Studio query id:
 
 ```text
 https://api.studio.thegraph.com/query/<SUBGRAPH_ID>/defihub/version/latest

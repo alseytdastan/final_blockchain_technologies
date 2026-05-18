@@ -62,7 +62,7 @@ Description: Contract addresses are configured for Arbitrum Sepolia, but `subgra
 
 Impact: The subgraph section will not load indexed data until the URL is replaced.
 
-Recommendation: Deploy the subgraph and replace `YOUR_SUBGRAPH_ID`.
+Recommendation: Deploy the subgraph and replace `e8af44be2560e092ff8222b3eae88642`.
 
 Status: Acknowledged.
 

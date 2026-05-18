@@ -1,0 +1,82 @@
+type Pool @entity(immutable: false) {
+  id: ID!
+  tokenA: Bytes!
+  tokenB: Bytes!
+  creator: Bytes
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
+  totalSwaps: BigInt!
+  totalLiquidityEvents: BigInt!
+}
+
+type LiquidityEvent @entity(immutable: true) {
+  id: ID!
+  pool: Pool!
+  sender: Bytes!
+  amountA: BigInt!
+  amountB: BigInt!
+  liquidity: BigInt!
+  eventType: String!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Swap @entity(immutable: true) {
+  id: ID!
+  pool: Pool!
+  sender: Bytes!
+  tokenIn: Bytes!
+  tokenOut: Bytes!
+  amountIn: BigInt!
+  amountOut: BigInt!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultAccount @entity(immutable: false) {
+  id: ID!
+  owner: Bytes!
+  totalDeposited: BigInt!
+  totalWithdrawn: BigInt!
+  shareBalanceDelta: BigInt!
+  updatedAt: BigInt!
+}
+
+type VaultAction @entity(immutable: true) {
+  id: ID!
+  sender: Bytes!
+  owner: Bytes!
+  receiver: Bytes
+  assets: BigInt!
+  shares: BigInt!
+  actionType: String!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LoanPosition @entity(immutable: false) {
+  id: ID!
+  user: Bytes!
+  collateralDeposited: BigInt!
+  collateralWithdrawn: BigInt!
+  borrowed: BigInt!
+  repaid: BigInt!
+  liquidatedDebt: BigInt!
+  collateralSeized: BigInt!
+  updatedAt: BigInt!
+}
+
+type LoanAction @entity(immutable: true) {
+  id: ID!
+  user: Bytes!
+  actor: Bytes!
+  amount: BigInt!
+  secondaryAmount: BigInt!
+  actionType: String!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
