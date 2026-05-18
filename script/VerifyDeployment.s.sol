@@ -7,18 +7,14 @@ import {AMMPool} from "../contracts/amm/AMMPool.sol";
 import {ProtocolGovernor} from "../contracts/governance/ProtocolGovernor.sol";
 import {ProtocolTimelock} from "../contracts/governance/ProtocolTimelock.sol";
 import {ProtocolTreasury} from "../contracts/governance/ProtocolTreasury.sol";
-
-interface IOwnable {
-    function owner() external view returns (address);
-}
-
-import {ProtocolGovernor} from "../contracts/governance/ProtocolGovernor.sol";
-import {ProtocolTimelock} from "../contracts/governance/ProtocolTimelock.sol";
-import {ProtocolTreasury} from "../contracts/governance/ProtocolTreasury.sol";
 import {YieldVault} from "../contracts/vault/YieldVault.sol";
 import {LendingPool} from "../contracts/lending/LendingPool.sol";
 import {ProtocolAccessNFT} from "../contracts/token/ProtocolAccessNFT.sol";
 import {ChainlinkPriceFeed} from "../contracts/oracle/ChainlinkPriceFeed.sol";
+
+interface IOwnable {
+    function owner() external view returns (address);
+}
 
 /// @notice Post-deploy checks for course submission. Reads deployment JSON from DEPLOYMENT_JSON or by chain id.
 contract VerifyDeployment is Script {
